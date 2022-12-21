@@ -1,49 +1,24 @@
-interface Propery<T> {
-  genericProp: T,
-  setGeneric: Function,
+interface Property<T> {
   count: Function
 }
 
 
+class OddProperty implements Property<number>{
 
-class oddProperty implements Propery<number>{
-  genericProp: number;
-  constructor(genericProp: number) {
-    this.genericProp = genericProp;
-  }
-
-  setGeneric(genericProp: number) {
-    this.genericProp = genericProp
-  }
-
-  count() {
-    return this.genericProp % 2 === 0;
+  count(num: number) {
+    return num % 2 === 0;
   }
 }
 
-class primeProperty implements Propery<number>{
-  genericProp: number;
-  constructor(genericProp: number) {
-    this.genericProp = genericProp;
-  }
+class PrimeProperty implements Property<number>{
 
-  setGeneric(genericProp: number) {
-    this.genericProp = genericProp
-  }
+  count(num: number) {
 
-  count() {
-    if (this.genericProp === 1 ||
-      this.genericProp === 2 ||
-      this.genericProp === 3 ||
-      this.genericProp === 5 ||
-      this.genericProp === 7) {
-      return true;
-    }
-    if (this.genericProp === 0 ||
-      this.genericProp % 2 === 0 ||
-      this.genericProp % 3 === 0 ||
-      this.genericProp % 5 === 0 ||
-      this.genericProp % 7 === 0) {
+    if (
+      num % 2 !== 0 &&
+      num % 3 !== 0 &&
+      num % 5 !== 0 &&
+      num % 7 !== 0) {
       return false;
     }
     return true;
@@ -51,29 +26,22 @@ class primeProperty implements Propery<number>{
 
 }
 
-class palindromeProprty implements Propery<string | number>{
-  genericProp: string | number;
-  constructor(genericProp: string | number) {
-    this.genericProp = genericProp;
-  }
-  setGeneric(genericProp: string | number) {
-    this.genericProp = genericProp
-  }
+class PalindromeProperty implements Property<string | number>{
 
-  count() {
-    if (typeof this.genericProp === 'number') {
-      return this.genericProp as number === this.reveseNumber();
+  count(num: string | number) {
+    if (typeof num === 'number') {
+      return num as number === this.reveseNumber(num);
     }
-    if (typeof this.genericProp === 'string') {
-      const reversedString = this.genericProp.split('').reverse().join();
-      return this.genericProp.split('').join() === reversedString
+    if (typeof num === 'string') {
+      const reversedString = num.split('').reverse().join();
+      return num.split('').join() === reversedString
     }
     return true;
   }
 
-  private reveseNumber(): number {
+  private reveseNumber(num: number): number {
     let reversed: number = 0;
-    let numToReverse: number = this.genericProp as number;
+    let numToReverse: number = num as number;
     while (numToReverse > 0) {
       const right: number = numToReverse % 10;
       numToReverse = Math.floor(numToReverse / 10);
@@ -83,19 +51,33 @@ class palindromeProprty implements Propery<string | number>{
   }
 }
 
+class Person {
+  name: string;
+  id: number;
+  constructor(name: string, id: number) {
+    this.name = name;
+    this.id = id;
+  }
+}
 
-function elementCount<T>(arr: Array<T>, prop: Propery<T>) {
+class PersonId extends PalindromeProperty implements PalindromeProperty {
+  count(num: string | number): boolean {
+    throw new Error("Method not implemented.");
+  }
+
+}
+
+function elementCount<T>(arr: Array<T>, prop: Property<T>) {
   let count = 0;
-  arr.forEach(items => {
-    prop.setGeneric(items);
-    if (prop.count()) {
+  arr.forEach(item => {
+    if (prop.count(item)) {
       count++;
     }
   })
   console.log(count);
 }
 
-elementCount([1, 2, 3, 4], new oddProperty(0));
-elementCount([121, 222, 332, 124], new palindromeProprty(0));
-elementCount(['121', '222', '332', '124'], new palindromeProprty(''));
-elementCount([1, 2, 3, 4], new primeProperty(0))
+elementCount([1, 2, 3, 4], new OddProperty);
+elementCount([121, 222, 332, 124], new PalindromeProperty);
+elementCount(['121', '222', '332', '124'], new PalindromeProperty);
+elementCount([1, 2, 3, 4], new PrimeProperty);
