@@ -18,16 +18,19 @@ class primeProperty {
         this.genericProp = genericProp;
     }
     count() {
-        if (this.genericProp === 0) {
-            return false;
-        }
-        if (this.genericProp === 1 || this.genericProp === 2) {
+        if (this.genericProp === 1 ||
+            this.genericProp === 2 ||
+            this.genericProp === 3 ||
+            this.genericProp === 5 ||
+            this.genericProp === 7) {
             return true;
         }
-        for (let i = 2; i < this.genericProp; i++) {
-            if (this.genericProp % i === 0) {
-                return false;
-            }
+        if (this.genericProp === 0 ||
+            this.genericProp % 2 === 0 ||
+            this.genericProp % 3 === 0 ||
+            this.genericProp % 5 === 0 ||
+            this.genericProp % 7 === 0) {
+            return false;
         }
         return true;
     }
@@ -44,8 +47,8 @@ class palindromeProprty {
             return this.genericProp === this.reveseNumber();
         }
         if (typeof this.genericProp === 'string') {
-            const reversedString = this.genericProp.split('').reverse();
-            return this.genericProp.split('') === reversedString;
+            const reversedString = this.genericProp.split('').reverse().join();
+            return this.genericProp.split('').join() === reversedString;
         }
         return true;
     }
@@ -54,7 +57,7 @@ class palindromeProprty {
         let numToReverse = this.genericProp;
         while (numToReverse > 0) {
             const right = numToReverse % 10;
-            numToReverse = Math.floor(numToReverse) / 10;
+            numToReverse = Math.floor(numToReverse / 10);
             reversed = (10 * reversed) + right;
         }
         return reversed;
