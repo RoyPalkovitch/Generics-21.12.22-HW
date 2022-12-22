@@ -1,5 +1,5 @@
 interface Property<T> {
-  count: Function
+  count: Function;
 }
 
 
@@ -9,6 +9,7 @@ class OddProperty implements Property<number>{
     return num % 2 === 0;
   }
 }
+
 
 class PrimeProperty implements Property<number>{
 
@@ -26,9 +27,11 @@ class PrimeProperty implements Property<number>{
 
 }
 
-class PalindromeProperty implements Property<string | number>{
 
-  count(num: string | number) {
+class PalindromeProperty implements Property<string | number | Person>{
+
+  count(num: string | number | object) {
+
     if (typeof num === 'number') {
       return num as number === this.reveseNumber(num);
     }
@@ -36,7 +39,7 @@ class PalindromeProperty implements Property<string | number>{
       const reversedString = num.split('').reverse().join();
       return num.split('').join() === reversedString
     }
-    return true;
+    return false;
   }
 
   private reveseNumber(num: number): number {
@@ -51,6 +54,7 @@ class PalindromeProperty implements Property<string | number>{
   }
 }
 
+
 class Person {
   name: string;
   id: number;
@@ -58,11 +62,13 @@ class Person {
     this.name = name;
     this.id = id;
   }
+
 }
 
-class PersonId extends PalindromeProperty implements PalindromeProperty {
-  count(num: string | number): boolean {
-    throw new Error("Method not implemented.");
+class PersonId extends PalindromeProperty implements Property<Person>{
+
+  count(person: Person) {
+    return super.count(person.id);
   }
 
 }
@@ -77,7 +83,17 @@ function elementCount<T>(arr: Array<T>, prop: Property<T>) {
   console.log(count);
 }
 
+
 elementCount([1, 2, 3, 4], new OddProperty);
 elementCount([121, 222, 332, 124], new PalindromeProperty);
 elementCount(['121', '222', '332', '124'], new PalindromeProperty);
 elementCount([1, 2, 3, 4], new PrimeProperty);
+
+const person1 = new Person('avi1', 123123);
+const person2 = new Person('avi2', 123321);
+const person3 = new Person('avi3', 12321);
+const person4 = new Person('avi4', 122);
+
+elementCount([person1, person2, person3, person4], new PersonId);
+
+

@@ -24,7 +24,7 @@ class PalindromeProperty {
             const reversedString = num.split('').reverse().join();
             return num.split('').join() === reversedString;
         }
-        return true;
+        return false;
     }
     reveseNumber(num) {
         let reversed = 0;
@@ -44,8 +44,8 @@ class Person {
     }
 }
 class PersonId extends PalindromeProperty {
-    count(num) {
-        throw new Error("Method not implemented.");
+    count(person) {
+        return super.count(person.id);
     }
 }
 function elementCount(arr, prop) {
@@ -61,3 +61,8 @@ elementCount([1, 2, 3, 4], new OddProperty);
 elementCount([121, 222, 332, 124], new PalindromeProperty);
 elementCount(['121', '222', '332', '124'], new PalindromeProperty);
 elementCount([1, 2, 3, 4], new PrimeProperty);
+const person1 = new Person('avi1', 123123);
+const person2 = new Person('avi2', 123321);
+const person3 = new Person('avi3', 12321);
+const person4 = new Person('avi4', 122);
+elementCount([person1, person2, person3, person4], new PersonId);
