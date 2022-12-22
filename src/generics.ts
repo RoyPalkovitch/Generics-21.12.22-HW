@@ -1,5 +1,5 @@
 interface Property<T> {
-  count: Function;
+  count(num: T): boolean;
 }
 
 
